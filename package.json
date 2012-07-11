@@ -1,0 +1,13 @@
+{
+  "author": "Robert Pitt <roberptitt1988@gmail.com> (http://robertpitt.me/)",
+  "name": "Blog",
+  "description": "A powerful blog built on nodeJS",
+  "version": "0.0.0",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

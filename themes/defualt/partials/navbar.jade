@@ -1,0 +1,20 @@
+div(class="navbar navbar-fixed-top")
+  div(class="navbar-inner")
+    div(class="container")
+      a(class="brand", href="#") Blog Engine
+      div(class="nav-collapse")
+        ul(class="nav")
+          li(class="active")
+            a(href="/") Home
+          - if(_user && _user.isAdmin)
+            li(id="add_new_menu")
+              a(href="#add_new_menu", class="dropdown dropdown-toggle", data-toggle="dropdown") Add New
+              ul.dropdown-menu
+                li
+                  a(href="/admin/posts/create") Post
+                li
+                  a(href="/admin/pages/create") Page
+                li
+                  a(href="/admin/users/create") User
+          li
+            a(href="#help") Help
