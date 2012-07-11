@@ -9,6 +9,7 @@ var Express 	= require('express');
 var Config 		= require('../config.js');
 var Database 	= require('./database.js');
 var Routes 		= require('./routes/');
+var Installer 	= require('./installer.js');
 
 /**
  * Instantiate a new server instance

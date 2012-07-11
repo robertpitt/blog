@@ -17,6 +17,22 @@ var Config = new Mongoose.Schema({
 });
 
 /**
+ * Static Getter
+ */
+Config.statics.get = function(key, callback)
+{
+	this.findOne({key : key}, callback);
+}
+
+/**
+ * Static Setter
+ */
+Config.statics.set = function(key, value, callback)
+{
+	this.update({key : key}, {value : value}, {upsert: true}, callback);
+}
+
+/**
  * Export to Mongoose and module
  */
 module.exports = Mongoose.model('Config', Config);
