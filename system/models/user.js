@@ -32,11 +32,6 @@ User.methods.isAdmin = function()
 	return ['super', 'admin'].indexOf(this.role) > -1;
 }
 
-User.methods.isSuperAdmin = function()
-{
-	return this.role == 'super';
-}
-
 /**
  * Login method
  */
