@@ -13,8 +13,9 @@ var Mongoose 	= require('mongoose'),
  * Create the Model
  */
 var Comment = new Mongoose.Schema({
+	title 		: {type: String},
 	content 	: {type : String, required : true},
-	published 	: {type : Date, defualt : Date.now},
+	published 	: {type : Date, default : Date.now},
 	owner 		: {type: ObjectId, ref : 'User'}
 });
 

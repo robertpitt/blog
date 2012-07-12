@@ -1,22 +1,26 @@
 div(class="navbar navbar-fixed-top")
   div(class="navbar-inner")
     div(class="container")
-      a(class="brand", href="#") Blog Engine
       div(class="nav-collapse")
         ul(class="nav")
           li(class="active")
             a(href="/") Home
-          - if(_user && (_user.role == "super" || _user.role == "admin"))
+          - if(_user && _user.isAdmin())
             li(id="add_new_menu")
-              a(href="#add_new_menu", class="dropdown dropdown-toggle", data-toggle="dropdown") Add New
+              a(href="#add_new_menu", class="dropdown dropdown-toggle", data-toggle="dropdown") Admin
               ul.dropdown-menu
                 li
-                  a(href="/admin/posts/create") Post
+                  a(href="/admin/") Dashboard
                 li
-                  a(href="/admin/pages/create") Page
+                  a(href="/admin/posts/create") Create post
                 li
-                  a(href="/admin/users/create") User
+                  a(href="/admin/pages/create") Create Page
+                li
+                  a(href="/admin/users/manage") Manage Users
           li
             a(href="#help") Help
-        form(class="navbar-search pull-left")
+          - if(!_user)
+            li
+              a(href="/user/login") Login
+        form(class="navbar-search pull-right")
           input(type="text", class="search-query", placeholder="Search..")

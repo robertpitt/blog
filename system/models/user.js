@@ -27,6 +27,16 @@ var User = new Mongoose.Schema({
 	role 		: {type : String, enum : ['super', 'admin', 'editor', 'author', 'contributer', 'subscriber'], default: 'subscriber'}
 });
 
+User.methods.isAdmin = function()
+{
+	return ['super', 'admin'].indexOf(this.role) > -1;
+}
+
+User.methods.isSuperAdmin = function()
+{
+	return this.role == 'super';
+}
+
 /**
  * Login method
  */
