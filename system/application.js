@@ -9,6 +9,7 @@ var Express 	= require('express');
 var Config 		= require('../config.js');
 var Database 	= require('./database.js');
 var Routes 		= require('./routes/');
+var Auth	 	= require('./auth.js');
 var Installer 	= require('./installer.js');
 
 /**
@@ -61,6 +62,11 @@ Application.configure(function(){
 	}));
 
 	/**
+	 * Bind authentication library
+	 */
+	Application.use(Auth.middleware());
+
+	/**
 	 * Use the router for obvius reasons
 	 */
 	Application.use(Application.router);
@@ -71,8 +77,7 @@ Application.configure(function(){
 	Application.dynamicHelpers({
 		_session : function(req){return req.session;},
 		_config : function(){return Config.application},
-		_user : function(req){
-		}
+		_user : function(req){return req.user;}
 	});
 });
 

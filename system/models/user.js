@@ -1,11 +1,19 @@
 /**
- * 
- */
-
-/**
  * Require Dependancies
  */
-var Mongoose = require('mongoose');
+var Mongoose = require('mongoose'),
+	Crypto = require('crypto')
+
+/**
+ * Helper function
+ * Creates a hash from a plain-text password and salt
+ */
+var _createHashFromPassword = function(pt_passsword, salt)
+{
+	var hash = Crypto.createHash('sha256');
+	hash.update(pt_passsword + salt);
+	return hash.digest('hex');
+}
 
 /**
  * Create the Model
@@ -13,42 +21,33 @@ var Mongoose = require('mongoose');
 var User = new Mongoose.Schema({
 	displayName : {type : String, required : true},
 	username 	: {type : String, index: { unique: true }},
-	email 		: {type : String, required: true},
+	email 		: {type : String, required: true, validate : [/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, "Email is not valid"]},
 	password 	: {type : String, required : true},
-	hash 		: {type : String}
+	salt 		: {type : String}, /*Auto generated*/
+	role 		: {type : String, enum : ['super', 'admin', 'editor', 'author', 'contributer', 'subscriber'], default: 'subscriber'}
 });
 
-// Private array of chars to use
-var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-var uuid = function (len, radix)
+/**
+ * Login method
+ */
+User.statics.getUserByCredentials = function(username, password, callback)
 {
-	var chars = CHARS, uuid = [], i;
-	radix = radix || chars.length;
+	this.findOne({username : username}, function(err, user){
+		if(err) return callback(err, null);
 
-	if (len) {
-	  // Compact form
-	  for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
-	} else {
-  		// rfc4122, version 4 form
-	  var r;
+		/**
+		 * We need to recompile the salt and check to see if it's a match
+		 * @todo : is this secure enough?
+		 */
+		if(_createHashFromPassword(password, user.salt) == user.password)
+		{
+			return callback(null, user)
+		}
 
-	  // rfc4122 requires these characters
-	  uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-	  uuid[14] = '4';
+		return callback(null, null);
+	})
+}
 
-	  // Fill in random data.  At i==19 set the high bits of clock sequence as
-	  // per rfc4122, sec. 4.1.5
-	  for (i = 0; i < 36; i++)
-	  {
-	    if (!uuid[i])
-	    {
-	      r = 0 | Math.random()*16;
-	      uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
-	    }
-	  }
-	}
-	return uuid.join('');
-};
 
 /**
  * pre-save method to generate hash
@@ -57,10 +56,24 @@ User.pre('save', function (next) {
 	var password = this.get("password");
 
 	/**
-	 * Generate salt and update the password
+	 * Only hash the account of the hash does not exists
 	 */
-	this.set("salt", uuid(17))
-	next();
+	if(!this.salt)
+	{
+		/**
+		 * Create a new random salt
+		 */
+		Crypto.randomBytes(32, function(ex, buf) {
+			var salt = buf.toString('hex');
+
+			/**
+			 * Create the password from the salt
+			 */
+			this.set("password", _createHashFromPassword(password, salt));
+			this.set("salt", salt);
+			next();
+		}.bind(this));
+	}
 })
 
 /**

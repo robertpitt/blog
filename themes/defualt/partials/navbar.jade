@@ -6,7 +6,7 @@ div(class="navbar navbar-fixed-top")
         ul(class="nav")
           li(class="active")
             a(href="/") Home
-          - if(_user && _user.isAdmin)
+          - if(_user && (_user.role == "super" || _user.role == "admin"))
             li(id="add_new_menu")
               a(href="#add_new_menu", class="dropdown dropdown-toggle", data-toggle="dropdown") Add New
               ul.dropdown-menu
@@ -18,3 +18,5 @@ div(class="navbar navbar-fixed-top")
                   a(href="/admin/users/create") User
           li
             a(href="#help") Help
+        form(class="navbar-search pull-left")
+          input(type="text", class="search-query", placeholder="Search..")

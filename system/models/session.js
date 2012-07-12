@@ -6,13 +6,15 @@
  * Require Dependancies
  */
 var Mongoose = require('mongoose'),
-	ObjectId = Mongoose.ObjectId;
+	_Store = require('express').session.Store;
 
 var Session = new Mongoose.Schema({
-	_id : {type: String, required : true},
+	sid : {type: String, required : true, unique : true},
 	expires : {type: Date, required: true},
 	session : {type: String, required: false}
 });
+
+
 
 /**
  * Set or update a session to MongoDB
@@ -25,7 +27,7 @@ Session.statics.set = function(sid, session, callback)
 	try
 	{
 		var newSession = {
-			_id: sid,
+			sid: sid,
 			session: JSON.stringify(session)
 		}
 
@@ -40,7 +42,7 @@ Session.statics.set = function(sid, session, callback)
     	/**
     	 * Update/insert the session
     	 */
-    	this.update({_id: sid}, newSession, {upsert: true, safe: true}, function(err, data){
+    	this.update({sid: sid}, newSession, {upsert: true}, function(err, data){
     		callback && callback(err || null);
     	});
 	}
@@ -65,7 +67,7 @@ Session.statics.get = function(sid, callback)
 	/**
 	 * Find the session from the database
 	 */
-	this.findOne({_id: sid}, function(err, result) {
+	this.findOne({sid: sid}, function(err, result) {
 		if(err)
 		{
 			callback && callback(err, null);
@@ -105,7 +107,7 @@ Session.statics.get = function(sid, callback)
  */
 Session.statics.destroy = function(sid, callback)
 {
-	this.remove({_id: sid}, function(){
+	this.remove({sid: sid}, function(){
 		callback && callback(null, null);
 	});
 }
@@ -130,6 +132,13 @@ Session.statics.length = function(callback)
 {
 	collection.count({}, callback);
 }
+
+/**
+ * Import the Sesssion Store structure
+ */
+Session.statics.createSession 	= _Store.prototype.createSession.bind(_Store.Store);
+Session.statics.load 			= _Store.prototype.load.bind(_Store.Store);
+Session.statics.regenerate 		= _Store.prototype.regenerate.bind(_Store.Store);
 
 //export the model
 module.exports = Mongoose.model("Session", Session);

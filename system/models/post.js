@@ -16,7 +16,7 @@ var Post = new Mongoose.Schema({
 	content 	: {type : String, required : true},
 	published 	: {type : Date, default: Date.now },
 	category 	: {type : ObjectId, ref : 'Category'},
-	comments 	: {type : ObjectId, ref : 'Comment'},
+	comments 	: [{type : ObjectId, ref : 'Comment'}],
 	owner 		: {type : ObjectId, ref : 'User'}
 });
 

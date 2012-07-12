@@ -42,11 +42,12 @@ ConfigModel.get('installed', function(err, doc){
 		displayName : "Adminsitrator",
 		username 	: "admin",
 		email 		: "admin@localhost.com",
-		password 	: "changeme"
+		password 	: "changeme",
+		role 		: "super"
 	}).save(function(err, adminAccount){
 		if(err){throw err;}
 		console.log(">> Administration account created. (username: admin, password: changeme)");
-
+		
 		/**
 		 * Insert the Uncategorised category
 		 */
