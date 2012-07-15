@@ -23,6 +23,12 @@ exports.middleware = function()
 		{
 			User.findOne({_id : req.session._id}, function(err, user){
 				if(err){ return next(err);}
+
+				req.logout = function()
+				{
+					delete req.session._id;
+				}
+				
 				req.user = user;
 				next();
 			});

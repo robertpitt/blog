@@ -20,6 +20,23 @@ var indexHandler = function(req, res)
 }
 
 /**
+ * Handles request to /user/
+ * @param  {Object} req RequestObject
+ * @param  {Object} res ResponseObject
+ * @param  {Function} next call next in line
+ */
+var logoutHandler = function(req, res)
+{
+	if(!req.user)
+	{
+		return res.redirect('/user/login');
+	}
+
+	req.logout();
+	res.redirect("/");
+}
+
+/**
  * Handles request to /user/logout
  * @param  {Object} req RequestObject
  * @param  {Object} res ResponseObject
@@ -62,6 +79,9 @@ var loginHandler = function(req, res, next)
 	var user = req.param("username");
 	var pass = req.param("password");
 
+	/**
+	 * Make sure we have content
+	 */
 	if(!user || !pass)
 	{
 		res.render("user/login.jade", {
@@ -92,4 +112,5 @@ var loginHandler = function(req, res, next)
 }
 
 module.exports.push(["get", "/user/?", indexHandler]);
-module.exports.push(["all", "/user/login?", loginHandler]);
+module.exports.push(["all", "/user/logout/?", logoutHandler]);
+module.exports.push(["all", "/user/login/?", loginHandler]);
