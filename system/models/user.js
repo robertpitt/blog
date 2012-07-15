@@ -41,10 +41,9 @@ User.statics.getUserByCredentials = function(username, password, callback)
 		if(err) return callback(err, null);
 
 		/**
-		 * We need to recompile the salt and check to see if it's a match
-		 * @todo : is this secure enough?
+		 * Check to see if the user exists
 		 */
-		if(_createHashFromPassword(password, user.salt) == user.password)
+		if(user && (_createHashFromPassword(password, user.salt) == user.password))
 		{
 			return callback(null, user)
 		}

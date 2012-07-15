@@ -62,6 +62,11 @@ Application.configure(function(){
 	}));
 
 	/**
+	 * Assign CSRF Middleware
+	 */
+	Application.use(Express.csrf());
+
+	/**
 	 * Bind authentication library
 	 */
 	Application.use(Auth.middleware());
@@ -76,8 +81,9 @@ Application.configure(function(){
 	 */
 	Application.dynamicHelpers({
 		_session : function(req){return req.session;},
-		_config : function(){return Config.application},
-		_user : function(req){return req.user;}
+		_config : function(){return Config.application;},
+		_user : function(req){return req.user;},
+		_csrf : function(req){return req.session._csrf;}
 	});
 });
 
