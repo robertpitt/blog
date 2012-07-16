@@ -68,7 +68,7 @@ var indexHandler = function(req, res, next){
 		 * Assign the results to the 
 		 */
 		templateData.posts = result;
-		res.render("index.jade", templateData);
+		res.render("blog", templateData);
 	});
 }
 /**

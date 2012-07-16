@@ -1,6 +1,6 @@
 each post in posts
-  article(class="well")
+  article(class="well", id=post._id)
     h3
-      a(href="/post/" + post._id, )!= post.title
+      a(href="/post/" + post._id)= post.title
       p= post.category.title
     div.content= post.content

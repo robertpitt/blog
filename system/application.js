@@ -9,6 +9,7 @@ var Express 	= require('express');
 var Config 		= require('../config.js');
 var Database 	= require('./database.js');
 var Routes 		= require('./routes/');
+var Middleware	= require('./middleware/');
 var Auth	 	= require('./auth.js');
 var Installer 	= require('./installer.js');
 
@@ -21,6 +22,16 @@ var Application = module.exports = Express.createServer();
  * Configure the server
  */
 Application.configure(function(){
+	/**
+	 * Assign the database to the application for modules, plugins etc.
+	 */
+	Application.Database = Database;
+
+	/**
+	 * Assign the configuration to the Application for modules, plugins etc.
+	 */
+	Application.Config = Config;
+
 	/**
 	 * Set the application view directory
 	 */
@@ -62,6 +73,19 @@ Application.configure(function(){
 	}));
 
 	/**
+	 * Make sure the database is available for every connections
+	 */
+	Application.use(function(req, res, next){
+		if(Database.connection.readyState != 1)
+		{
+			next("Database has not initialized", 500)
+			return;
+		}
+
+		next(null, null)
+	});
+
+	/**
 	 * Assign CSRF Middleware
 	 */
 	Application.use(Express.csrf());
@@ -70,6 +94,13 @@ Application.configure(function(){
 	 * Bind authentication library
 	 */
 	Application.use(Auth.middleware());
+
+	/**
+	 * Aassign all middle ware
+	 */
+	Middleware.map(function(m){
+		Application.use.call(Application, m());
+	});
 
 	/**
 	 * Use the router for obvius reasons
