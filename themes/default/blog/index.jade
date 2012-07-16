@@ -1,8 +1,17 @@
-include /partials/navbar
-div(id="wrapper", class="container")
-  div(class="row-fluid", class="content")
-    div(class="span7")
-      include partials/posts/latest
-    div(class="span4 sidebar")
-      include partials/sidebar
-include partials/footer
+extends layout
+
+// Core Wrapper
+block body
+  // Navigation Bar
+  include /partials/navbar
+  div(id="wrapper", class="container")
+    div(class="row-fluid", class="content")
+      // Blog Posts
+      div(class="span7")
+        // Latest Posts
+        include partials/posts/latest
+      // Sidebar
+      div(class="span4 sidebar")
+        include partials/sidebar
+  // Footer
+  include partials/footer

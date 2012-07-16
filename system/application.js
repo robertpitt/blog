@@ -6,6 +6,7 @@
  * Require Dependancies
  */
 var Express 	= require('express');
+var Path 		= require('path');
 var Config 		= require('../config.js');
 var Database 	= require('./database.js');
 var Routes 		= require('./routes/');
@@ -46,7 +47,7 @@ Application.configure(function(){
 	/**
 	 * Cookie Parser is required for the sessions
 	 */
-	Application.use(Express.cookieParser());
+	Application.use(Express.cookieParser(Config.session.secret));
 
 	/**
 	 * Body Parser is required to parse POST request
@@ -54,22 +55,17 @@ Application.configure(function(){
 	Application.use(Express.bodyParser());
 
 	/**
-	 * Allows the server to behave like a restful api
+	 * Setup both internal and theme static routers
 	 */
-	Application.use(Express.methodOverride());
-
-	/**
-	 * We set the public static directory from within the theme
-	 */
-	Application.use(Express.static(__dirname + '/../themes/' + Config.application.theme + "/public"));
+	Application.use(Express.static(Path.normalize(__dirname + '/../public/')));
+	Application.use(Express.static(Path.normalize(__dirname + '/../themes/' + Config.application.theme + "/public")));
 
 	/**
 	 * Use our session model as middleware
 	 */
 	Application.use(Express.session({
-		store : Database.model("Session"),
-		secret : Config.session.secret,
-		key : Config.session.key
+		store 	: Database.model("Session"),
+		key 	: Config.session.key
 	}));
 
 	/**
@@ -103,19 +99,20 @@ Application.configure(function(){
 	});
 
 	/**
+	 * Use custom helpers to expose data to templates
+	 */
+	Application.use(function(req, res, next){
+		res.locals._session = req.session;
+		res.locals._config = Config.application;
+		res.locals._user = req.user;
+		res.locals._csrf = req.session._csrf;
+		next();
+	});
+
+	/**
 	 * Use the router for obvius reasons
 	 */
 	Application.use(Application.router);
-
-	/**
-	 * Use custom helpers to expose data to templates
-	 */
-	Application.dynamicHelpers({
-		_session : function(req){return req.session;},
-		_config : function(){return Config.application;},
-		_user : function(req){return req.user;},
-		_csrf : function(req){return req.session._csrf;}
-	});
 });
 
 /**
@@ -154,5 +151,5 @@ for(var i = 0; i < Routes.length; i++)
  * Start listening
  */
 Application.listen(Config.server.port || 3000, function(){
-	console.log("Blog server listening on port (%s)", Application.address().port);
+	console.log("Blog server listening on port (%s)", Config.server.port || 3000);
 });

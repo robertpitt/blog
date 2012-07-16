@@ -13,7 +13,7 @@ var indexHandler = function(req, res)
 {
 	if(!req.user)
 	{
-		return res.redirect('/user/login');
+		return res.redirect('blog/user/login');
 	}
 
 	res.send("Welcome to your user page");
@@ -69,7 +69,7 @@ var loginHandler = function(req, res, next)
 		/**
 		 * Send the login page
 		 */
-		res.render("user/login.jade");
+		res.render("blog/user/login.jade");
 		return;
 	}
 
@@ -84,7 +84,7 @@ var loginHandler = function(req, res, next)
 	 */
 	if(!user || !pass)
 	{
-		res.render("user/login.jade", {
+		res.render("blog/user/login.jade", {
 			error : "Username and Password required"
 		});
 		return;
@@ -98,7 +98,7 @@ var loginHandler = function(req, res, next)
 
 		if(!user)
 		{
-			res.render("user/login.jade", {
+			res.render("blog/user/login.jade", {
 				error : "Username and Password incorrect"
 			});
 			return;

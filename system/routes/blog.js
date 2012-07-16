@@ -16,7 +16,9 @@ var indexHandler = function(req, res, next){
 	/**
 	 * Create an object that we use to set the template data to.
 	 */
-	var templateData = {};
+	var templateData = {
+		layout : 'blog/layout.jade'
+	};
 
 	/**
 	 * Create a new query object for the Post Collections
