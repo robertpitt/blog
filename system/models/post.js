@@ -17,16 +17,20 @@ var Post = new Mongoose.Schema({
 	title 		: {type : String, required : true},
 	slug 		: {type : String, required : true, lowercase: true},
 	description	: {type : String, required : true},
-	keywords 	: {type : String,  required : true, lowercase: true},
+	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
 	content 	: {type : String, required : true},
 	excerpt		: {type : String, required : false},
-	status		: {type : String, enum : ['published', 'draft', 'private'], default: 'draft'},
-	created 	: {type : Date, default: Date.now},
-	published 	: {type : Date, default: Date.now},
-	modified 	: {type : Date, default: Date.now},
-	categories 	: [{type : ObjectId, ref : 'Category'}],
+	status		: {type : String, enum : ['published', 'draft', 'private', 'protected'], default: 'draft'},
+	password	: {type : String, required : false},
+	created 	: {type : Date, default : Date.now},
+	published 	: {type : Date, default : Date.now},
+	modified 	: {type : Date, default : Date.now},
+	parent		: {type : ObjectId, ref : 'Post'},
+	type		: {type : ObjectId, ref : 'Type'},
+	terms		: [{type : ObjectId, ref : 'Term'}],
 	comments 	: [{type : ObjectId, ref : 'Comment'}],
-	views 		: {type: Number, default: 0}
+	order		: {type : Number, default : 0},
+	views 		: {type : Number, default : 0}
 });
 
 /**
