@@ -70,7 +70,9 @@ Application.configure(function(){
 	 */
 	Application.use(Express.session({
 		store 	: Database.model("Session"),
-		key 	: Config.session.key
+		key 	: Config.session.key,
+		secret  : Config.session.secret // Geilt Added this <- Was Missing, Blog wouldnt Start.
+
 	}));
 
 	/**

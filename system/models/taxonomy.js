@@ -18,7 +18,7 @@ var Taxonomy = new Mongoose.Schema({
 	description	: {type : String, required : true},
 	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
 	content 	: {type : String, required : true},
-	terms		: [{type : ObjectId, ref : 'Term'}]
+	terms		: [{type : ObjectId, ref : 'Term'}],
 	order		: {type : Number, default : 0}
 });
 

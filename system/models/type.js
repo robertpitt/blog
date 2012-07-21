@@ -18,7 +18,7 @@ var Type = new Mongoose.Schema({
 	description	: {type : String, required : true},
 	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
 	content 	: {type : String, required : true},
-	taxonomies	: [{type : ObjectId, ref : 'Taxonomies'}]
+	taxonomies	: [{type : ObjectId, ref : 'Taxonomies'}],
 	order		: {type: Number, default : 0}
 });
 
