@@ -2,7 +2,8 @@
  * Require Dependancies
  */
 var Mongoose = require('mongoose'),
-	Crypto = require('crypto')
+	Crypto = require('crypto'),
+	ObjectId 	= Mongoose.Schema.ObjectId;
 
 /**
  * Helper function
@@ -19,11 +20,12 @@ var _createHashFromPassword = function(pt_passsword, salt)
  * Create the Model
  */
 var User = new Mongoose.Schema({
-	displayName : {type : String, required : true},
 	username 	: {type : String, index: { unique: true }},
-	email 		: {type : String, required: true, validate : [/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, "Email is not valid"]},
+	displayName : {type : String, required : true},
+	email 		: {type : String, required: true, index: {unique : true}},
 	password 	: {type : String, required : true},
-	salt 		: {type : String}, /*Auto generated*/
+	salt 		: {type : String},
+	reg_date 	: {type : Date, default: Date.now},
 	role 		: {type : String, enum : ['super', 'admin', 'editor', 'author', 'contributer', 'subscriber'], default: 'subscriber'}
 });
 

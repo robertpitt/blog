@@ -14,15 +14,15 @@ var redrectRoot = function(req, res){
 
 var indexHandler = function(req, res, next){
 	/**
-	 * Create an object that we use to set the template data to.
+	 * Create a filter object to query the DB with
 	 */
-	var templateData = {
-		layout : 'blog/layout.jade'
-	};
+	var queryfilters = {};
 
 	/**
-	 * Create a new query object for the Post Collections
+	 * Create an object that we use to set the template data to.
 	 */
+	var templateData = {};
+
 	var postQuery = Database.model("Post").find({});
 
 	/**

@@ -1,19 +1,21 @@
-div(class="container login-container")
-  div.content
-    div.row
-      div.login-form
-        h2 Login
-        - if(typeof error != "undefined")
-          div(class="alert alert-error")
-            button(class="close", type="button", data-dismiss="alert") x
-            strong= error
-        form(action="/user/login", method="POST", id="login-form")
-          input(type="hidden", name="_csrf", value=_csrf)
-          fieldset
-            div(class="control-group")
-              div.controls
-                input(type="text", placeholder="Username", name="username")
-            div(class="control-group")
-              div.controls
-                input(type="password", placeholder="Password", name="password")
-            button(class="btn primary", type="submit") Submit
+extends ../layout
+block body
+  div(class="container login-container")
+    div.content
+      div.row
+        div.login-form
+          h2 Login
+          - if(typeof error != "undefined")
+            div(class="alert alert-error")
+              button(class="close", type="button", data-dismiss="alert") x
+              strong= error
+          form(action="/user/login", method="POST", id="login-form")
+            input(type="hidden", name="_csrf", value=_csrf)
+            fieldset
+              div(class="control-group")
+                div.controls
+                  input(type="text", placeholder="Username", name="username")
+              div(class="control-group")
+                div.controls
+                  input(type="password", placeholder="Password", name="password")
+              button(class="btn primary", type="submit") Submit

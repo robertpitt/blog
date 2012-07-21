@@ -57,7 +57,7 @@ var homepage = function(req, res){
 	/**
 	 * Welcome Admin
 	 */
-	res.render("admin", {});
+	res.render("admin");
 
 	/**
 	req.login("admin", "changeme", function(err, user){

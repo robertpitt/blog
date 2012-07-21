@@ -75,4 +75,4 @@ exports.mongo = {};
  * A: mongodb://localhost/blog
  * B: mongodb://usernameyy:password@localhost/blog
  */
-exports.mongo.dns = "mongodb://localhost/blog"
+exports.mongo.dns = "mongodb://localhost/blog";

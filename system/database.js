@@ -15,8 +15,7 @@ var Config 		= require('../config.js');
 module.exports = Mongoose.connect(Config.mongo.dns, function(err){
 	if(err)
 	{
-		console.error("Error: (%s)", err.message);
+		console.error("Error: Unable to connect to mongoose:: %s", err.message);
 		process.exit();
 	}
 });
-

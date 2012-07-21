@@ -1,8 +1,8 @@
 div(class="navbar navbar-fixed-top")
   div(class="navbar-inner")
     div(class="container")
+      a(href="/", class="brand") Nodepress
       div(class="nav-collapse")
-        a(href="/", class="brand") Nodepress
         ul(class="nav")
           li(class="active")
             a(href="/") Home
@@ -18,8 +18,9 @@ div(class="navbar navbar-fixed-top")
                   a(href="/admin/pages/create") Create Page
                 li
                   a(href="/admin/users/manage") Manage Users
-          li
-            a(href="#help") Help
+          - if(_user)
+            li
+              a(href="/user/logout") Logout
           - if(!_user)
             li
               a(href="/user/login") Login

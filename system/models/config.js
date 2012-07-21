@@ -12,8 +12,8 @@ var Mongoose = require('mongoose'),
  * Create the Model
  */
 var Config = new Mongoose.Schema({
-    key  : {type : String, uppercase : true, trim : true, required 	: true},
-    value : {type : String, default : ""}
+    key  	: {type : String, lowercase : true, required : true},
+    value 	: {type : String, default : ""}
 });
 
 /**
@@ -30,6 +30,14 @@ Config.statics.get = function(key, callback)
 Config.statics.set = function(key, value, callback)
 {
 	this.update({key : key}, {value : value}, {upsert: true}, callback);
+}
+
+/**
+ * Static Updater
+ */
+Config.statics.update = function(key, value, callback)
+{
+	Config.statics.set(key, value, callback);
 }
 
 /**

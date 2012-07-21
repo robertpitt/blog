@@ -1,13 +1,24 @@
 {
   "author": "Robert Pitt <roberptitt1988@gmail.com> (http://robertpitt.me/)",
-  "name": "Blog",
-  "description": "A powerful blog built on nodeJS",
-  "version": "0.0.0",
+  "name": "NodePress",
+  "description": "A powerful blog built with nodeJS",
+  "version": "1.0.0",
   "main": "index.js",
-  "dependencies": {},
+  "contributers" : [
+    {"name" : "Robert Pitt", "email" : "robertpitt1988@gmail.com"}
+  ],
+  "bin" : {
+    "nodepress" : "./bin/nodepress"
+  },
+  "dependencies": {
+    "express" : ">=3.0",
+    "mongoose": ">=2.7",
+    "jade"    : "*"
+  },
   "devDependencies": {},
   "optionalDependencies": {},
+  "licence" : "MIT",
   "engines": {
-    "node": "*"
+    "node": ">=0.6"
   }
 }

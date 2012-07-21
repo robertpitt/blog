@@ -58,14 +58,30 @@ ConfigModel.get('installed', function(err, doc){
 			/**
 			 * Create the sample post
 			 */
-			new PostModel({
-				title : "Welcome to your new blog",
-				content : "This is some sample content",
-				category : cat,
-				owner : adminAccount
-			}).save(function(err, post){
-				if(err){throw err;}
+			var posts = []
 
+			for(var i = 0; i < 8; i++)
+			{
+				posts.push({
+					title : "Welcome to your new blog",
+					content : "This is some sample content",
+					category : cat,
+					owner : adminAccount
+				});
+			}
+
+			function savePosts(done)
+			{
+				var count = 0;
+				posts.forEach(function(p){
+					new PostModel(p).save(function(err){
+						count++;
+						if(count == posts.length) done();
+					})
+				})
+			}
+
+			savePosts(function(){
 				console.log(">> Sample content has been created.");
 				/**
 				 * 

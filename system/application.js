@@ -1,5 +1,5 @@
 /**
- * 
+ * Nodepress
  */
 
 /**
@@ -13,6 +13,11 @@ var Routes 		= require('./routes/');
 var Middleware	= require('./middleware/');
 var Auth	 	= require('./auth.js');
 var Installer 	= require('./installer.js');
+
+/**
+ * Load the Database plugins
+ */
+require('./database/plugins/');
 
 /**
  * Instantiate a new server instance
@@ -148,8 +153,12 @@ for(var i = 0; i < Routes.length; i++)
 }
 
 /**
- * Start listening
+ * Start the server once the DB is connected
  */
-Application.listen(Config.server.port || 3000, function(){
-	console.log("Blog server listening on port (%s)", Config.server.port || 3000);
+Database.connection.on("open", function(){
+	console.log("Database connected on port (%s)", Database.connection.port);
+
+	Application.listen(Config.server.port || 3000, function(){
+		console.log("Blog server listening on port (%s)", Config.server.port || 3000);
+	});
 });

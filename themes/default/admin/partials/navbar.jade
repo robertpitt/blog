@@ -1,0 +1,39 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+
+      a.brand(href='/admin/') Base Admin
+      .nav-collapse
+        ul.nav.pull-right
+          li.dropdown
+            a.dropdown-toggle(href='#', data-toggle='dropdown')
+              i.icon-cog
+              | Settings
+              b.caret
+            ul.dropdown-menu
+              li
+                a(href='javascript:;') Account Settings
+              li
+                a(href='javascript:;') Privacy Settings
+              li.divider
+            li
+              a(href='javascript:;') Help
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                i.icon-user
+                | Rod Howard
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='javascript:;') My Profile
+                li
+                  a(href='javascript:;') My Groups
+                li.divider
+                li
+                  a(href='javascript:;') Logout
+      form.navbar-search.pull-right
+        input.search-query(type='text', placeholder='Search')

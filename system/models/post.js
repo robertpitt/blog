@@ -12,12 +12,14 @@ var Mongoose 	= require('mongoose'),
  * Create the Model
  */
 var Post = new Mongoose.Schema({
+	author 		: {type  : ObjectId, ref : 'User'},
 	title 		: {type : String, required : true},
 	content 	: {type : String, required : true},
 	published 	: {type : Date, default: Date.now},
-	category 	: [{type : ObjectId, ref : 'Category'}],
-	comments 	: [{type: ObjectId,	ref : 'Comment'}],
-	owner 		: {type : ObjectId, ref : 'User'}
+	modified 	: {type : Date, default: Date.now},
+	categories 	: [{type : ObjectId, ref : 'Category'}],
+	comments 	: [{type : ObjectId, ref : 'Comment'}],
+	views 		: {type: Number, default: 0}
 });
 
 /**
