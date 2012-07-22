@@ -14,6 +14,8 @@ var Middleware	= require('./middleware/');
 var Auth	 	= require('./auth.js');
 var Installer 	= require('./installer.js');
 
+console.log("Installation OK!");
+
 /**
  * Load the Database plugins
  */

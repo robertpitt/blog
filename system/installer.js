@@ -83,12 +83,10 @@ ConfigModel.get('installed', function(err, doc){
 
 			savePosts(function(){
 				console.log(">> Sample content has been created.");
-				/**
-				 * 
-				 */
+
 				ConfigModel.set('installed', 'true', function(){
 					console.log(">> Installation of database has completed");
-				})
+				});
 			})
 		})
 	});

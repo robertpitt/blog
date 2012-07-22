@@ -5,8 +5,7 @@
 /**
  * Require Dependancies
  */
-var Mongoose = require('mongoose'),
-	ObjectId = Mongoose.ObjectId;
+var Mongoose = require('mongoose');
 
 /**
  * Create the Model
@@ -30,14 +29,6 @@ Config.statics.get = function(key, callback)
 Config.statics.set = function(key, value, callback)
 {
 	this.update({key : key}, {value : value}, {upsert: true}, callback);
-}
-
-/**
- * Static Updater
- */
-Config.statics.update = function(key, value, callback)
-{
-	Config.statics.set(key, value, callback);
 }
 
 /**
