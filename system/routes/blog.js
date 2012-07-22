@@ -23,6 +23,9 @@ var indexHandler = function(req, res, next){
 	 */
 	var templateData = {};
 
+	/**
+	 * Create a post ojbect
+	 */
 	var postQuery = Database.model("Post").find({});
 
 	/**
@@ -70,6 +73,7 @@ var indexHandler = function(req, res, next){
 		 * Assign the results to the 
 		 */
 		templateData.posts = result;
+		console.log(result);
 		res.render("blog", templateData);
 	});
 }
