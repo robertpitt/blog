@@ -31,12 +31,12 @@ var indexHandler = function(req, res, next){
 	/**
 	 * Pull in the categories
 	 */
-	postQuery.populate('category');
+	postQuery.populate('type').populate('terms').populate('type.taxonomies');
 
 	/**
 	 * Pull in the owner object, but only specified data for security
 	 */
-	postQuery.populate('owner', ['displayName', 'username']);
+	postQuery.populate('author', ['displayName', 'username']);
 
 	/**
 	 * pagination

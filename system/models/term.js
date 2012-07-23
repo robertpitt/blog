@@ -13,11 +13,11 @@ var Mongoose 	= require('mongoose'),
  */
 var Term = new Mongoose.Schema({
 	name 		: {type : String, required : true},
-	title 		: {type : String, required : true},
+	title 		: {type : String},
 	slug 		: {type : String, required : true, lowercase: true},
-	description	: {type : String, required : true},
+	description	: {type : String},
 	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
-	content 	: {type : String, required : true},
+	content 	: {type : String},
 	order		: {type : Number, default : 0}
 });
 

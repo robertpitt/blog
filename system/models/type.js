@@ -12,14 +12,14 @@ var Mongoose 	= require('mongoose'),
  * Create the Model
  */
 var Type = new Mongoose.Schema({
-	name 		: {type : String, required : true},
-	title 		: {type : String, required : true},
-	slug 		: {type : String, required : true, lowercase: true},
-	description	: {type : String, required : true},
-	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
-	content 	: {type : String, required : true},
-	taxonomies	: [{type : ObjectId, ref : 'Taxonomies'}],
-	order		: {type: Number, default : 0}
+	name 		: {type 	: String, required : true},
+	title 		: {type 	: String},
+	slug 		: {type 	: String, required : true, lowercase: true, unique : {index : false}},
+	description	: {type 	: String},
+	content 	: {type 	: String},
+	order		: {type 	: Number, default : 0},
+	keywords 	: [{type 	: ObjectId, ref : 'Keyword'}],
+	taxonomies	: [{type 	: ObjectId, ref : 'Taxonomy'}]
 });
 
 /**

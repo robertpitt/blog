@@ -13,11 +13,11 @@ var Mongoose 	= require('mongoose'),
  */
 var Taxonomy = new Mongoose.Schema({
 	name 		: {type : String, required : true},
-	title 		: {type : String, required : true},
+	title 		: {type : String},
 	slug 		: {type : String, required : true, lowercase: true},
-	description	: {type : String, required : true},
+	description	: {type : String},
 	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
-	content 	: {type : String, required : true},
+	content 	: {type : String},
 	terms		: [{type : ObjectId, ref : 'Term'}],
 	order		: {type : Number, default : 0}
 });
