@@ -28,6 +28,10 @@ var Post = new Mongoose.Schema({
 	parent		: {type : ObjectId, ref : 'Post'},
 	type		: {type : ObjectId, ref : 'Type'},
 	terms		: [{type : ObjectId, ref : 'Term'}],
+	meta		: [{
+		key		: { type : String, required: true },
+		value	: { type : String } 
+		}],
 	comments 	: [{type : ObjectId, ref : 'Comment'}],
 	order		: {type : Number, default : 0},
 	views 		: {type : Number, default : 0}

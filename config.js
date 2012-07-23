@@ -12,7 +12,7 @@ exports.application = {};
  * e.g. http://domain.com/blog
  * Note: Ending slash required
  */
-exports.application.base_path = "//nodes.robertpitt.me/";
+exports.application.base_path = "//d3vserv.com/";
 
 /**
  * Theme Folder
@@ -32,7 +32,7 @@ exports.session.key = "_session_";
 /**
  * Session Secret, this is required for hashing the cookie data
  */
-exports.session.secret = "SECRET_HASH_HERE";
+exports.session.secret = "etry5j5k57k576k67k";
 
 /**
  * Session MAX_AGE, how long should the cookie last before expiring
@@ -63,7 +63,7 @@ exports.server = {};
 /**
  * Default listening port
  */
-exports.port = 3000;
+exports.server.port = 8080;
 
 /**
  * Database (MongoDB) Configuration

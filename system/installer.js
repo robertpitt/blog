@@ -11,13 +11,13 @@ var Database = require('./database.js');
 /**
  * Fetch required models
  */
-var ConfigModel = Database.model("Config");
-var UserModel	= Database.model("User");
-var PostModel	= Database.model("Post");
+var ConfigModel 	= Database.model("Config");
+var UserModel		= Database.model("User");
+var PostModel		= Database.model("Post");
 var CategoryModel	= Database.model("Category");
-var TypeModel	= Database.model("Type");
+var TypeModel		= Database.model("Type");
 var TaxonomyModel	= Database.model("Taxonomy");
-var TermModel	= Database.model("Term");
+var TermModel		= Database.model("Term");
 
 /**
  * Check installation key

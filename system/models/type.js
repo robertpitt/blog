@@ -18,6 +18,10 @@ var Type = new Mongoose.Schema({
 	description	: {type 	: String},
 	content 	: {type 	: String},
 	order		: {type 	: Number, default : 0},
+	properties	: [{
+		key		: { type : String, required: true },
+		value	: { type : String } 
+		}],
 	keywords 	: [{type 	: ObjectId, ref : 'Keyword'}],
 	taxonomies	: [{type 	: ObjectId, ref : 'Taxonomy'}]
 });

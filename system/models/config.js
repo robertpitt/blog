@@ -11,7 +11,7 @@ var Mongoose = require('mongoose');
  * Create the Model
  */
 var Config = new Mongoose.Schema({
-    key  	: {type : String, lowercase : true, required : true},
+    key  	: {type : String, unique: true, lowercase : true, required : true},
     value 	: {type : String, default : ""}
 });
 

@@ -26,13 +26,16 @@ var indexHandler = function(req, res, next){
 	/**
 	 * Create a post ojbect
 	 */
-	var postQuery = Database.model("Post").find({});
-
-	/**
+	var postQuery = Database.model("Post").find({status: "published"});
+	console.log('At Post');
+	/**S
 	 * Pull in the categories
 	 */
-	postQuery.populate('type').populate('terms').populate('type.taxonomies');
-
+	postQuery.populate('type');
+	postQuery.populate('type.taxonomies',[], {});
+	postQuery.populate('terms');
+	postQuery.where({'type.slug' : 'post'});
+	
 	/**
 	 * Pull in the owner object, but only specified data for security
 	 */
