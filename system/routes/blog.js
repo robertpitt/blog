@@ -12,7 +12,95 @@ var redrectRoot = function(req, res){
 	res.redirect('/');
 }
 
+var determineEntity = function(req, res, next)
+{
+	var _entity = req.param('entity', '');
+	console.log("@ Determine Entity");
+
+	Database.model("Type").find({slug : ''}).exec(function(err, typeDocs){
+		if(err) return next(err);
+		if(typeDocs)
+		{
+			console.log("@ Found blank type (%s)", typeDocs.length);
+			/**
+			 * fetch posts where slug = /*entity*
+			 */
+			Database.model('Post').findOne({slug : _entity}, function(err, post){
+				if(err) return next(err);
+				if(post)
+				{
+					console.log("@ Found document (%s)", post.slug);
+					next();
+					return;
+				}
+
+				console.log("@ Unable to locate documents for (%s)", _entity);
+				next(404);
+			});
+			return;
+		}
+
+		console.log("@ Checking Terms with blank type slug and Taxonomy with path 0");
+		Database.model('Taxonomy').find({path : false}, function(err, taxonomies){
+			if(err) return next(err);
+			if(docs)
+			{
+
+				console.log("@ Found Taxonomy with path 0");
+
+				taxonomies.populate('terms').where({'terms.path' : true}).exec(function(err, taxonomies){
+
+					if(err) return next(err);
+
+					console.log("@ Got taxonomies where terms.path = 1", taxonomies.length);
+
+					Database.model('Post').find({term : taxonomies.term}, function(err, posts){
+
+						if(err) return next(err);
+
+						console.log("@ Found a total of (%d) where slug = ");
+
+						posts.populate('type').where({'type.slug' : ''}).exec(function(err, posts){
+
+							if(err) return next(err);
+
+						});
+
+					});
+
+					return;
+
+				});
+
+			}
+		});
+		req._entity = docs
+	});
+}
+
 var indexHandler = function(req, res, next){
+	/**
+	 * Testcase
+	 */
+	Database.model("Type").find({slug : 'post'}, function(err, _type){
+		if(err) throw err;
+
+		/**
+		 * Load the post by type
+		 */
+		var _posts = Database.model('Post').find({'type._id' : _type._id});
+
+		/**
+		 * Populate references
+		 */
+		_posts.populate('author', ['displayName']).populate('terms').populate('type');
+
+
+		_posts.exec(function(err, docs){
+			res.render("blog", {posts : docs});
+		})
+	});
+	
 	/**
 	 * Create a filter object to query the DB with
 	 */
@@ -26,15 +114,13 @@ var indexHandler = function(req, res, next){
 	/**
 	 * Create a post ojbect
 	 */
-	var postQuery = Database.model("Post").find({status: "published"});
+	var postQuery = Database.model("Post").find({status: "published"}, function(){
+	});
 	console.log('At Post');
-	/**S
-	 * Pull in the categories
-	 */
+
 	postQuery.populate('type');
-	postQuery.populate('type.taxonomies',[], {});
 	postQuery.populate('terms');
-	postQuery.where({'type.slug' : 'post'});
+	postQuery.populate('type.taxonomies', ["slug"]);
 	
 	/**
 	 * Pull in the owner object, but only specified data for security
@@ -65,30 +151,10 @@ var indexHandler = function(req, res, next){
 		 */
 		//postQuery.where('category.slug').equals(req.param('category'));
 	}
-	
-	/**
-	 * Execute the query
-	 */
-	postQuery.exec(function(err, result){
-		if(err) throw err;
-
-		/**
-		 * Assign the results to the 
-		 */
-		templateData.posts = result;
-		console.log(result);
-		res.render("blog", templateData);
-	});
 }
 /**
  * Compile index base routes
  */
-//Redirects
-module.exports.push(["get", "/page/?", redrectRoot]);
-module.exports.push(["get", "/category/?", redrectRoot]);
-
-//Actual Routes
 module.exports.push(["get", "/", indexHandler]);
-module.exports.push(["get", "/page/:page/?", indexHandler]);
-module.exports.push(["get", "/category/:category/?", indexHandler]);
-module.exports.push(["get", "/category/:category/:page/?", indexHandler]);
+module.exports.push(["get", "/:entity", determineEntity]);
+module.exports.push(["get", "/*", indexHandler]);

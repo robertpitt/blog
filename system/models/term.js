@@ -16,6 +16,7 @@ var Term = new Mongoose.Schema({
 	title 		: {type : String},
 	slug 		: {type : String, required : true, lowercase: true},
 	description	: {type : String},
+	path 		: {type: Boolean, default : true},
 	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
 	content 	: {type : String},
 	order		: {type : Number, default : 0}
