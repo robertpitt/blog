@@ -25,7 +25,7 @@ var determineEntity = function(req, res, next)
 			/**
 			 * fetch posts where slug = /*entity*
 			 */
-			Database.model('Post').findOne({slug : _entity}, function(err, post){
+			Database.model('Entity').findOne({slug : _entity}, function(err, post){
 				if(err) return next(err);
 				if(post)
 				{
@@ -54,7 +54,7 @@ var determineEntity = function(req, res, next)
 
 					console.log("@ Got taxonomies where terms.path = 1", taxonomies.length);
 
-					Database.model('Post').find({term : taxonomies.term}, function(err, posts){
+					Database.model('Entity').find({term : taxonomies.term}, function(err, posts){
 
 						if(err) return next(err);
 
@@ -88,7 +88,7 @@ var indexHandler = function(req, res, next){
 		/**
 		 * Load the post by type
 		 */
-		var _posts = Database.model('Post').find({'type._id' : _type._id});
+		var _posts = Database.model('Entity').find({'type._id' : _type._id});
 
 		/**
 		 * Populate references
@@ -114,9 +114,9 @@ var indexHandler = function(req, res, next){
 	/**
 	 * Create a post ojbect
 	 */
-	var postQuery = Database.model("Post").find({status: "published"}, function(){
+	var postQuery = Database.model("Entity").find({status: "published"}, function(){
 	});
-	console.log('At Post');
+	console.log('At Entity');
 
 	postQuery.populate('type');
 	postQuery.populate('terms');

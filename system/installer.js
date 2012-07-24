@@ -13,7 +13,7 @@ var Database = require('./database.js');
  */
 var ConfigModel 	= Database.model("Config");
 var UserModel		= Database.model("User");
-var PostModel		= Database.model("Post");
+var EntityModel		= Database.model("Entity");
 var CategoryModel	= Database.model("Category");
 var TypeModel		= Database.model("Type");
 var TaxonomyModel	= Database.model("Taxonomy");
@@ -54,7 +54,7 @@ ConfigModel.get('installed', function(err, doc){
 		/**
 		 * Create the types
 		 */
-		new TypeModel({name : 'Post',title : 'Post',slug : 'post',description : 'All posts',content : ''}).save(function(err,postType){
+		new TypeModel({name : 'Post',title : 'Post',slug : 'post',description : 'All posts',content : ''}).save(function(err,entityType){
 			if(err) throw err;
 
 			/**
@@ -62,13 +62,13 @@ ConfigModel.get('installed', function(err, doc){
 			 */
 			new TaxonomyModel({
 				name : 'Category',title : 'Category',slug : 'category',description : 'All Categories'
-			}).save(function(err, postTaxonomy){
+			}).save(function(err, entityTaxonomy){
 				if(err) throw err;
 
-				console.log(">> Created post types");
-				postType.taxonomies.push(postTaxonomy);
-				postType.save(function(err, postType){
-					console.log(">> Pushed post taxonomy into postType")
+				console.log(">> Created entity types");
+				entityType.taxonomies.push(entityTaxonomy);
+				entityType.save(function(err, entityType){
+					console.log(">> Pushed entity taxonomy into entityType")
 
 					/**
 					 * Create the term
@@ -78,28 +78,28 @@ ConfigModel.get('installed', function(err, doc){
 						title : 'Uncategorised',
 						slug : 'uncategorised',
 						description : 'Uncategorised'
-					}).save(function(err, postTerm){
+					}).save(function(err, entityTerm){
 						if(err) throw err;
 
 						console.log(">> Terms created")
 
-						postTaxonomy.terms.push(postTerm);
-						postTaxonomy.save(function(err, postTaxonomy){
+						entityTaxonomy.terms.push(entityTerm);
+						entityTaxonomy.save(function(err, entityTaxonomy){
 							console.log(">> Terms pushed to Taxonomy");
 
-							new PostModel({
+							new EntityModel({
 								name : "Welcome to your new blog",
 								title : "Welcome to your new blog",
 								content : "This is some sample content",
 								slug : "welcome-to-your-new-blog",
 								description : "Description for welcome to your new blog",
-								terms : [postTerm],
-								type : postType,
+								terms : [entityTerm],
+								type : entityType,
 								status : 'published',
 								author : adminAccount,
-							}).save(function(err, postObject){
+							}).save(function(err, entityObject){
 								if(err) throw err;
-								console.log(">> Sample post has been created");
+								console.log(">> Sample entity has been created");
 								ConfigModel.set('installed', 'true', function(){
 									console.log(">> Installation of database has completed");
 								});
