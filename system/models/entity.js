@@ -22,6 +22,7 @@ var Entity = new Mongoose.Schema({
 	excerpt		: {type : String},
 	status		: {type : String, enum : ['published', 'draft', 'private', 'protected'], default: 'draft'},
 	password	: {type : String},
+	template	: {type : String},
 	created 	: {type : Date, default : Date.now},
 	modified 	: {type : Date, default : Date.now},
 	published 	: {type : Date, default : ""},
