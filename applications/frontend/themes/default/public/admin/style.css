@@ -1,0 +1,59 @@
+/**
+ * Nodepress administration styles
+ */
+
+/**
+ * Import bootstrap
+ */
+@import url("../bootstrap/css/bootstrap.css");
+
+body {
+	font: 13px/1.7em 'Open Sans';
+}
+
+/**
+ * Navigation bar
+ */
+.navbar-inner {
+	padding: 7px 0;
+	background: #292929;
+	border-bottom: 1px solid #121212;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+}
+
+.navbar .container {
+	position: relative;
+}
+
+.navbar .brand {
+	font-weight: 600;
+	position: relative;
+	top: 2px;
+}
+
+.navbar .nav a {
+	font-size: 11px;
+}
+
+.dropdown .dropdown-menu {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.dropdown-menu .divider {
+	height: 1px;
+	margin: 8px 1px;
+	overflow: hidden;
+	background-color: #E5E5E5;
+	border-bottom: 1px solid white;
+}
+
+.navbar .search-query {
+	background-color: #444;
+	width: 150px;
+	font-size: 11px;
+	font-weight: bold;
+}

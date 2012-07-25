@@ -1,0 +1,6 @@
+each post in posts
+  //Post
+  article(class="well", id=post._id)
+    h3
+      a(href="/posts/" + post.slug)= post.title
+    div.content= post.name

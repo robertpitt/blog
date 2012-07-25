@@ -9,106 +9,68 @@ var Express 	= require('express');
 var Path 		= require('path');
 var Config 		= require('../config.js');
 var Database 	= require('./database.js');
-var Routes 		= require('./routes/');
+var Database 	= require('./database.js');
 var Middleware	= require('./middleware/');
 var Auth	 	= require('./auth.js');
-var Installer 	= require('./installer.js');
-
-console.log("Installation OK!");
-
-/**
- * Load the Database plugins
- */
-require('./database/plugins/');
 
 /**
  * Instantiate a new server instance
  */
-var Application = module.exports = Express.createServer();
+var globalApplication = module.exports = Express.createServer();
 
 /**
- * Configure the server
+ * Configure the main server application
  */
-Application.configure(function(){
+globalApplication.configure(function(){
 	/**
 	 * Assign the database to the application for modules, plugins etc.
 	 */
-	Application.Database = Database;
+	globalApplication.Database = Database;
 
 	/**
 	 * Assign the configuration to the Application for modules, plugins etc.
 	 */
-	Application.Config = Config;
-
-	/**
-	 * Set the application view directory
-	 */
-	Application.set('views', __dirname + '/../themes/' + Config.application.theme);
-
-	/**
-	 * Use jade as a template engine, this maybe changed via a theme package at
-	 * a later date.
-	 */
-	Application.set('view engine', 'jade');
+	globalApplication.Config = Config;
 
 	/**
 	 * Cookie Parser is required for the sessions
 	 */
-	Application.use(Express.cookieParser(Config.session.secret));
+	globalApplication.use(Express.cookieParser(Config.session.secret));
 
 	/**
 	 * Body Parser is required to parse POST request
 	 */
-	Application.use(Express.bodyParser());
-
-	/**
-	 * Setup both internal and theme static routers
-	 */
-	Application.use(Express.static(Path.normalize(__dirname + '/../public/')));
-	Application.use(Express.static(Path.normalize(__dirname + '/../themes/' + Config.application.theme + "/public")));
+	globalApplication.use(Express.bodyParser());
 
 	/**
 	 * Use our session model as middleware
 	 */
-	Application.use(Express.session({
+	globalApplication.use(Express.session({
 		store 	: Database.model("Session"),
 		key 	: Config.session.key
 	}));
 
 	/**
-	 * Make sure the database is available for every connections
-	 */
-	Application.use(function(req, res, next){
-		if(Database.connection.readyState != 1)
-		{
-			next("Database has not initialized", 500)
-			return;
-		}
-
-		next(null, null)
-	});
-
-	/**
 	 * Assign CSRF Middleware
 	 */
-	Application.use(Express.csrf());
+	globalApplication.use(Express.csrf());
 
 	/**
 	 * Bind authentication library
 	 */
-	Application.use(Auth.middleware());
+	globalApplication.use(Auth.middleware());
 
 	/**
 	 * Aassign all middle ware
 	 */
 	Middleware.map(function(m){
-		Application.use.call(Application, m());
+		globalApplication.use.call(globalApplication, m());
 	});
 
 	/**
 	 * Use custom helpers to expose data to templates
 	 */
-	Application.use(function(req, res, next){
+	globalApplication.use(function(req, res, next){
 		res.locals._session = req.session;
 		res.locals._config = Config.application;
 		res.locals._user = req.user;
@@ -119,14 +81,14 @@ Application.configure(function(){
 	/**
 	 * Use the router for obvius reasons
 	 */
-	Application.use(Application.router);
+	globalApplication.use(globalApplication.router);
 });
 
 /**
  * Configure development
  */
-Application.configure('development', function(){
-	Application.use(Express.errorHandler({
+globalApplication.configure('development', function(){
+	globalApplication.use(Express.errorHandler({
 		dumpExceptions: true,
 		showStack: true
 	}));
@@ -135,24 +97,14 @@ Application.configure('development', function(){
 /**
  * Configure production
  */
-Application.configure('production', function(){
-	Application.use(Express.errorHandler());
+globalApplication.configure('production', function(){
+	globalApplication.use(Express.errorHandler());
 });
 
-/**
- * Push the routes into the application
- */
-for(var i = 0; i < Routes.length; i++)
-{
-	var method = Routes[i][0];
-	var selector = Routes[i][1];
-	var callback = Routes[i][2];
+require('../applications/').forEach(function(app, i){
+	globalApplication.use(app.route, app);
+});
 
-	/**
-	 * Call the method passing in the required data
-	 */
-	Application[method](selector, callback);
-}
 
 /**
  * Start the server once the DB is connected
@@ -160,7 +112,7 @@ for(var i = 0; i < Routes.length; i++)
 Database.connection.on("open", function(){
 	console.log("Database connected on port (%s)", Database.connection.port);
 
-	Application.listen(Config.server.port || 3000, function(){
+	globalApplication.listen(Config.server.port || 3000, function(){
 		console.log("Blog server listening on port (%s)", Config.server.port || 3000);
 	});
 });

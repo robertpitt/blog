@@ -19,3 +19,8 @@ module.exports = Mongoose.connect(Config.mongo.dns, function(err){
 		process.exit();
 	}
 });
+
+/**
+ * Load the plugin system
+ */
+require('./database/plugins/');

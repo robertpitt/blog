@@ -45,12 +45,8 @@ function displayPost(req, res, next, postObject)
 	 * The post page requires the extra data so we
 	 * need to populate that data before showing the results
 	 */
-	postObject.populate('author').exec(function(err, postObject){
-		if(err) return next(err);
-
-		res.render('blog/post', {
-			post : postObject
-		});
+	res.render('blog/post', {
+		post : postObject
 	});
 }
 
@@ -81,7 +77,7 @@ var determineEntity = function(req, res, next)
 						if(err) return next(err);
 
 						//console.log("@ Got taxonomies where terms.path = 1", taxonomies.length);
-						Database.model('Post').find({term : taxonomies.term}, function(err, posts){
+						Database.model('Entity').find({term : taxonomies.term}, function(err, posts){
 							if(err) return next(err);
 							//console.log("@ Found a total of (%d) where slug = ");
 							posts.populate('type').where({'type.slug' : ''}).exec(function(err, posts){
@@ -100,7 +96,7 @@ var determineEntity = function(req, res, next)
 		 */
 		if(typeDocs)
 		{
-			Database.model('Post').findOne({slug : _entity}, function(err, post){
+			Database.model('Entity').findOne({slug : _entity}, function(err, post){
 				if(err) return next(err);
 				return post ? displayPost(req, res, next, post) : next(404);
 			})
