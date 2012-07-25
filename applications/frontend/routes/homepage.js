@@ -33,8 +33,8 @@ module.exports = function(req, res, next){
 		 * Populate references
 		 */
 		_posts.populate('author', ['displayName']).populate('terms').populate('type');
-		_posts.exec(function(err, docs){
-			res.render("index", {posts : docs});
+		_posts.exec(function(err, entities){
+			res.render("index", {entities : entities});
 		});
 	});
 }

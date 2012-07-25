@@ -15,8 +15,6 @@ var Express 	= require('express');
 var Path 		= require('path');
 var Config 		= require(_corepath + '/config.js');
 var Database 	= require(_corepath + '/system/database.js');
-var Middleware	= require(_corepath + '/system/middleware/');
-var Auth	 	= require(_corepath + '/system/auth.js');
 
 /**
  * Instantiate a new server instance
@@ -33,10 +31,24 @@ Application.route = '/admin';
  */
 Application.configure(function(){
 	/**
+	 * Set the application view directory
+	 */
+	Application.set('views', __dirname + '/templates/' + Config.application.theme);
+
+	/**
+	 * Use jade as a template engine
+	 */
+	Application.set('view engine', 'jade');
+
+	/**
 	 * Setup both internal and theme static routers
 	 */
 	Application.use(Express.static(Path.normalize(__dirname + '/public')));
 });
+
+Application.get("*", function(req, res, next){
+	next();
+})
 
 Application.get('/admin/', function(req, res){
 	res.send("Welcome to your administration panel")

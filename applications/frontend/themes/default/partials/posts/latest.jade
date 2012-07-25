@@ -1,6 +1,6 @@
-each post in posts
+each entity in entities
   //Post
-  article(class="well", id=post._id)
+  article(class="well", id=entity._id)
     h3
-      a(href="/posts/" + post.slug)= post.title
-    div.content= post.name
+      a(href="/" + entity.slug)= entity.title
+    div.content= entity.name

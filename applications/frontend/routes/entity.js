@@ -29,7 +29,7 @@ function displayPost(req, res, next, id)
 		/**
 		 * Render the post template
 		 */
-		res.render('post', {entity : entity});
+		res.render('types/post', {entity : entity});
 	});
 }
 /**
@@ -84,7 +84,7 @@ module.exports = function(req, res, next)
 		{
 			Database.model('Entity').find({slug : slug}, ['_id'], function(err, post){
 				if(err) return next(err);
-				return post[0] ? displayPost(req, res, next, post[0]._id) : next(404);
+				post[0] ? displayPost(req, res, next, post[0]._id) : next(404);
 			})
 		}
 	});

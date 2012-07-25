@@ -1,9 +1,12 @@
-extends layout
+extends ../layout
+
+append head
+  title= entity.title
 
 // Core Wrapper
 block body
   // Navigation Bar
-  include /partials/navbar
+  include ../partials/navbar
   div(id="wrapper", class="container")
     div(class="row-fluid", class="content")
       // Blog Posts
@@ -12,6 +15,6 @@ block body
         p Will show the post information here
       // Sidebar
       div(class="span4 sidebar")
-        include partials/sidebar
+        include ../partials/sidebar
   // Footer
-  include partials/footer
+  include ../partials/footer
