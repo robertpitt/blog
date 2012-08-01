@@ -18,13 +18,14 @@ var Type = new Mongoose.Schema({
 	slug 		: {type 	: String, required : true, lowercase: true, unique : {index : false}},
 	description	: {type 	: String},
 	content 	: {type 	: String},
-	order		: {type 	: Number, default : 0},
+	path 		: {type: Boolean, default : true},
 	properties	: [{
 		key		: { type : String, required: true, unique : {index: true} },
 		value	: { type : String }
 	}],
 	keywords 	: [{type 	: ObjectId, ref : 'Keyword'}],
-	taxonomies	: [{type 	: ObjectId, ref : 'Taxonomy'}]
+	terms		: [{type 	: ObjectId, ref : 'Terms'}],
+	order		: {type 	: Number, default : 0}
 });
 
 /**

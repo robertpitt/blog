@@ -17,9 +17,14 @@ var Term = new Mongoose.Schema({
 	title 		: {type : String},
 	slug 		: {type : String, required : true, lowercase: true},
 	description	: {type : String},
+	content		: {type : String},
+	parent		: {type : ObjectId, ref : 'Term'},
 	path 		: {type: Boolean, default : true},
+	properties	: [{
+		key		: { type : String, required: true, unique : {index: true} },
+		value	: { type : String }
+	}],
 	keywords 	: [{type : ObjectId, ref : 'Keyword'}],
-	content 	: {type : String},
 	order		: {type : Number, default : 0}
 });
 

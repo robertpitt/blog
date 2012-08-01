@@ -28,8 +28,8 @@ var Entity = new Mongoose.Schema({
 	published 	: {type : Date, default : ""},
 	parent		: {type : ObjectId, ref : 'Post'},
 	type		: {type : ObjectId, ref : 'Type'},
-	taxonomies	: [{type : ObjectId, ref : 'Taxonomy'}],
 	terms		: [{type : ObjectId, ref : 'Term'}],
+	canonical	: {type : ObjectId, ref : 'Term'},
 	meta		: [{
 		key		: { type : String, required: true },
 		value	: { type : String } 
